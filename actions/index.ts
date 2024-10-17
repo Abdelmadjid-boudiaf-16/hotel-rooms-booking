@@ -1,8 +1,8 @@
 'use server'
 
-import { signIn, signOut } from "@/auth"
+import { signIn, signOut } from "@/auth";
 export const googleHandleSignIn = async () => {
-    await signIn('google', {redirectTo: '/dashboard'})
+    await signIn('google', {redirectTo: '/'})
 }
 
 export const credentialsHandleSignIn = async (data:{
@@ -21,5 +21,5 @@ export const credentialsHandleSignIn = async (data:{
 }
 
 export const handleSignOut = async () => {
-    await signOut({redirectTo: '/login'})
+    await signOut({ redirectTo: '/login' })
 }

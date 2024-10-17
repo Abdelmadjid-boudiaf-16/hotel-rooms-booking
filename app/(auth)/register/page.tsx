@@ -64,7 +64,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex flex-col w-full max-w-xl border border-black/20 rounded-md p-8 space-y-4 shadow-lg">
+    <div className="flex flex-col w-full max-w-xl border border-primary/20 rounded-md p-8 space-y-4 shadow-lg">
       <h1 className="text-4xl font-bold mb-4">Sign UP</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">

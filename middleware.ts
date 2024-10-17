@@ -1,19 +1,37 @@
-import { auth } from "@/auth"
- 
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
+
 export default auth((req) => {
-  if (req.nextUrl.pathname === "/") {
-    return; // Continue without redirecting
+  const { pathname } = req.nextUrl;
+  const origin = req.nextUrl.origin;
+
+  const redirectTo = (path: string) =>
+    NextResponse.redirect(new URL(path, origin));
+
+  if (pathname === "/") {
+    return;
   }
-  if (!req.auth  && req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/register') {
-    const newUrl = new URL("/login", req.nextUrl.origin)
-    return Response.redirect(newUrl)
+
+  if (!req.auth) {
+    if (pathname !== "/login" && pathname !== "/register") {
+      return redirectTo("/login");
     }
-    if (req.auth && (req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register')) {
-        const newUrl = new URL("/dashboard", req.nextUrl.origin)
-    return Response.redirect(newUrl)
-    }
-})
+    return;
+  }
+
+  if (pathname === "/login" || pathname === "/register") {
+    return redirectTo("/");
+  }
+  if (req.auth.user.admin && pathname.startsWith("/user")) {
+    return redirectTo("/");
+  }
+
+  if (!req.auth.user.admin && pathname.startsWith("/admin")) {
+    return redirectTo("/");
+  }
+});
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
-}
+};
+

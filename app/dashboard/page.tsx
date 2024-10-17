@@ -8,7 +8,7 @@ import React from 'react'
 const dashboard = () => {
   const {data:session} = useSession()
   return (
-    <div className='flex items-center flex-col justify-center min-h-screen gap-4'>
+    <div className='flex items-center flex-col justify-center min-h-screen gap-4 '>
       <h1> Welcom {session?.user?.name} </h1>
       <div>
         <form action={handleSignOut}>
