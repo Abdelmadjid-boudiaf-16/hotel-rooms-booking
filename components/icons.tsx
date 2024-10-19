@@ -1,6 +1,17 @@
-import { LucideProps, Loader2, X } from "lucide-react";
+import {
+  LucideProps,
+  Loader2,
+  X,
+  Trash2,
+  FilePenLineIcon,
+  PlusSquare,
+} from "lucide-react";
 
 export const Icons = {
+  add: PlusSquare,
+  edit: FilePenLineIcon,
+
+  remove: Trash2,
   spinner: Loader2,
   close: X,
   google: (props: LucideProps) => (

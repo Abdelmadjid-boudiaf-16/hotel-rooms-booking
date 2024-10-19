@@ -20,47 +20,86 @@ import { CancelConfirm } from "../confirm-cancel";
 import { useToast } from "@/hooks/use-toast";
 import { Icons } from "../icons";
 import Image from "next/image";
+import { Hotel } from "@/types";
 
-const HotelForm = ({ title }: { title: string }) => {
+const HotelForm = ({
+  title,
+  type = "add",
+  hotel,
+}: {
+  title: string;
+  type?: string;
+  hotel?: Hotel;
+}) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof hotelSchema>>({
-    resolver: zodResolver(hotelSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      images: [],
-      location: "",
-      owner: "",
-    },
-  });
+  let form;
+  if (type === "add" || !hotel) {
+    form = useForm<z.infer<typeof hotelSchema>>({
+      resolver: zodResolver(hotelSchema),
+      defaultValues: {
+        name: "",
+        email: "",
+        phone: "",
+        images: [],
+        location: "",
+        owner: "",
+      },
+    });
+  } else {
+    form = useForm<z.infer<typeof hotelSchema>>({
+      resolver: zodResolver(hotelSchema),
+      defaultValues: {
+        name: hotel.name,
+        email: hotel.email,
+        phone: hotel.phone,
+        images: hotel.images,
+        location: hotel.location,
+        owner: hotel.owner,
+      },
+    });
+  }
 
   const onSubmit = async (values: z.infer<typeof hotelSchema>) => {
-    console.log(values, "values");
     setIsLoading(true);
-    const response = await fetch("/api/hotels/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
+    let response: any = null;
+    if (type === "add" || !hotel) {
+      response = await fetch("/api/hotels/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+    } else {
+      response = await fetch(`/api/hotels/edit/${hotel.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+    }
 
     if (response.ok) {
-      toast({
-        title: "Add hotel successful",
-        description: "You can now see the hotel in hotels list.",
-      });
-      router.push("/admin/hotels");
+      if (type === "add") {
+        toast({
+          title: "Add hotel",
+          description: "Add hotel successful",
+        });
+      } else {
+        toast({
+          title: "Edit hotel.",
+          description: "Edit hotel successful!",
+        });
+      }
     } else {
       const errorData = await response.json();
       toast({
         variant: "destructive",
-        title: "add hotel failed",
+        title: type === "add" ? "add hotel failed" : "Edit hotel failed",
         description: errorData.message,
       });
     }
     setIsLoading(false);
+    router.push("/admin/hotels");
   };
 
   return (
