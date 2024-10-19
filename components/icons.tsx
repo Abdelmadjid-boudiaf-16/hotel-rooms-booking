@@ -1,8 +1,8 @@
-import { Github, LucideProps, Loader2 } from "lucide-react"
+import { LucideProps, Loader2, X } from "lucide-react";
 
 export const Icons = {
-  gitHub: Github,
   spinner: Loader2,
+  close: X,
   google: (props: LucideProps) => (
     <svg {...props} viewBox="0 0 24 24">
       <path
@@ -24,4 +24,4 @@ export const Icons = {
       <path d="M1 1h22v22H1z" fill="none" />
     </svg>
   ),
-}
+};

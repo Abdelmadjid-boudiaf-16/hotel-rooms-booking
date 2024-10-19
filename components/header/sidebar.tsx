@@ -85,10 +85,10 @@ export function SheetDemo({ isAdmin }: { isAdmin: boolean | null }) {
               <li
                 key={index}
                 className={cn(
-                  "flex items-center space-x-4 border-b px-6 py-4 transition-all duration-500 hover:translate-x-2 hover:bg-primary/5",
+                  "flex items-center space-x-4 border-b px-6 py-4 transition-all duration-500 hover:translate-x-2 hover:bg-foreground/5",
                   index === itemsToShow.length - 1 ? "border-b-0" : "",
                   pathname === item.path
-                    ? "bg-primary/5 font-bold text-primary"
+                    ? "bg-foreground font-bold text-primary-foreground hover:text-foreground"
                     : "",
                 )}
               >

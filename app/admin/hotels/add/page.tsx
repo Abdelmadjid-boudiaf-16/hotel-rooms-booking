@@ -1,9 +1,12 @@
-import React from 'react'
+import HotelForm from "@/components/hotel/hotel-form";
+import React from "react";
 
 const AddHotel = () => {
   return (
-    <div>AddHotel</div>
-  )
-}
+    <div className="flex justify-center">
+      <HotelForm title="Add Hotel" />
+    </div>
+  );
+};
 
-export default AddHotel
+export default AddHotel;

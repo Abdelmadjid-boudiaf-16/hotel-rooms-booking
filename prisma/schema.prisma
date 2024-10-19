@@ -50,6 +50,15 @@ model User {
   sessions      Session[]
 }
 
+model Hotel {
+  id            String   @id @default(cuid())
+  name          String
+  owner         String
+  email         String   @unique
+  phone         String
+  location      String
+  images         String[]
+}
 model VerificationToken {
   identifier String
   token      String   @unique
