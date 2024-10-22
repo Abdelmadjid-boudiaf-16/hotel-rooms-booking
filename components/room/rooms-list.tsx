@@ -1,15 +1,13 @@
 "use client";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell, TableHead,
+    TableHeader,
+    TableRow
 } from "@/components/ui/table";
-import { Hotel } from "@/types";
+import { Room } from "@/types";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import dayjs from "dayjs";
@@ -17,37 +15,37 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
-export default function HotelsList({ hotels }: { hotels: Hotel[] }) {
+export default function RoomsList({ rooms }: { rooms: Room[] }) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const deleteHotel = async (id: string) => {
+  const deleteroom = async (id: string) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/hotels/delete/${id}`, {
+      const response = await fetch(`/api/rooms/delete/${id}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
         toast({
-          title: "Hotel Deleted",
-          description: "Hotel deletion was successful.",
+          title: "room Deleted",
+          description: "room deletion was successful.",
         });
       } else {
         const errorData = await response.json();
         toast({
           variant: "destructive",
-          title: "Hotel Deletion Failed",
-          description: errorData.message || "Failed to delete the hotel.",
+          title: "room Deletion Failed",
+          description: errorData.message || "Failed to delete the room.",
         });
       }
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "An error occurred while deleting the hotel.",
+        description: "An error occurred while deleting the room.",
       });
-      console.error("Error deleting hotel:", error);
+      console.error("Error deleting room:", error);
     } finally {
       setIsLoading(false);
       router.refresh();
@@ -64,43 +62,39 @@ export default function HotelsList({ hotels }: { hotels: Hotel[] }) {
   return (
     <Table>
       <TableCaption>
-        <div className="flex flex-col items-center gap-y-3 mt-10">
-          <span>A list of your hotels.</span>{" "}
+        <div className="mt-10 flex flex-col items-center gap-y-3">
+          <span>A list of your rooms.</span>{" "}
           <Button onClick={() => router.refresh()}>Refresh</Button>
         </div>
       </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
-          <TableHead>Owner</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Phone</TableHead>
-          <TableHead>Address</TableHead>
+          <TableHead>Hotel</TableHead>
+          <TableHead>Room Number</TableHead>
           <TableHead>CreatedAt</TableHead>
           <TableHead>UpdatedAt</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {hotels.map((hotel) => (
-          <TableRow key={hotel.id}>
-            <TableCell>{hotel.name}</TableCell>
-            <TableCell>{hotel.owner}</TableCell>
-            <TableCell>{hotel.email}</TableCell>
-            <TableCell>{hotel.phone}</TableCell>
-            <TableCell>{hotel.location}</TableCell>
+        {rooms.map((room) => (
+          <TableRow key={room.id}>
+            <TableCell>{room.name}</TableCell>
+            <TableCell>{room.name}</TableCell>
+            <TableCell>{room.roomNumber}</TableCell>
             <TableCell>
-              {dayjs(hotel.createdAt).format("MMM DD,YYYY hh:mm:ss")}
+              {dayjs(room.createdAt).format("MMM DD,YYYY hh:mm:ss")}
             </TableCell>
             <TableCell>
-              {dayjs(hotel.updatedAt).format("MMM DD,YYYY hh:mm:ss")}
+              {dayjs(room.updatedAt).format("MMM DD,YYYY hh:mm:ss")}
             </TableCell>
             <TableCell>
               <div className="flex space-x-2">
                 <Button
                   variant={"outline"}
                   onClick={() => {
-                    console.log(hotel.name);
+                    console.log(room.name);
                   }}
                 >
                   <Icons.add size={20} className="text-green-500" />
@@ -108,15 +102,12 @@ export default function HotelsList({ hotels }: { hotels: Hotel[] }) {
                 <Button
                   variant={"outline"}
                   onClick={() => {
-                    router.push(`/admin/hotels/edit/${hotel.id}`);
+                    router.push(`/admin/rooms/edit/${room.id}`);
                   }}
                 >
                   <Icons.edit size={20} className="text-yellow-500" />
                 </Button>
-                <Button
-                  variant={"outline"}
-                  onClick={() => deleteHotel(hotel.id)}
-                >
+                <Button variant={"outline"} onClick={() => deleteroom(room.id)}>
                   <Icons.remove size={20} className="text-red-500" />
                 </Button>
               </div>

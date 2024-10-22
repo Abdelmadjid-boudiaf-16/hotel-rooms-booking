@@ -5,9 +5,9 @@ const passwordRegex =
 const phoneRegex =
   /^(\+\d{1,3}\s?)?(\(\d{3}\)\s?|\d{3}[-.\s]?)?\d{3}[-.\s]?\d{4}$/;
 
-
 const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const numberRegex = /^\d+$/;
 
 export const loginSchema = z.object({
   email: z.string().email(),
@@ -46,4 +46,14 @@ export const hotelSchema = z.object({
   owner: z.string().min(1, "Owner is required"),
   images: z.array(z.string()).min(1).nonempty(),
   location: z.string().min(1, "Location is required"),
+});
+export const roomSchema = z.object({
+  name: z.string(),
+  hotelName: z.string(),
+  rentPerDay: z.string().regex(/^\d+$/, "invalid value use just numbers"),
+  type: z.string(),
+  bedRooms: z.string().regex(/^\d+$/, "invalid value use just numbers"),
+  roomNumber: z.string().regex(/^\d+$/, "invalid value use just numbers"),
+  amenities: z.string(),
+  images: z.array(z.string()),
 });

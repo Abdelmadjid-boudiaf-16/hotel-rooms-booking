@@ -57,9 +57,22 @@ model Hotel {
   email         String   @unique
   phone         String
   location      String
-  images         String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  images        String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+model Room {
+  id            String   @id @default(cuid())
+  hotelName       String
+  name          String
+  rentPerDay    String
+  type          String
+  roomNumber    String
+  amenities     String
+  bedRooms      String
+  images        String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 model VerificationToken {
   identifier String
