@@ -6,8 +6,11 @@ import React from "react";
 
 const EditRoomInfo = async ({ params }: { params: { id: string } }) => {
   const roomId = params.id;
-  const response = await prisma.room.findUnique({ where: { id: roomId } });
-  const room: Room = JSON.parse(JSON.stringify(response));
+  const response = await prisma.room.findUnique({
+    where: { id: roomId },
+    include: { hotel: true },
+  });
+  const room: (Room & {hotel: Hotel}) = JSON.parse(JSON.stringify(response));
   const hotelsResponse = await prisma.hotel.findMany();
   const hotels: Hotel[] = JSON.parse(JSON.stringify(hotelsResponse));
 

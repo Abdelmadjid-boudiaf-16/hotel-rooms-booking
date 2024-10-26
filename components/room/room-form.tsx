@@ -37,9 +37,9 @@ const RoomForm = ({
 }: {
   title: string;
   type?: string;
-  room?: Room;
-  hotels: Hotel[];    
-  }) => {
+  room?: Room & { hotel: Hotel };
+  hotels: Hotel[];
+}) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -50,10 +50,10 @@ const RoomForm = ({
       defaultValues: {
         name: "",
         type: "",
-        roomNumber: '1',
-        rentPerDay: '1',
+        roomNumber: "1",
+        rentPerDay: "1",
         amenities: "",
-        bedRooms: '1',
+        bedRooms: "1",
         hotelName: "",
         images: [],
       },
@@ -68,7 +68,7 @@ const RoomForm = ({
         rentPerDay: room.amenities,
         amenities: room.amenities,
         bedRooms: room.bedRooms,
-        hotelName: room.hotelName,
+        hotelName: room.hotel.name,
         images: room.images,
       },
     });
@@ -193,9 +193,11 @@ const RoomForm = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="clasic">Clasic</SelectItem>
-                    <SelectItem value="premium">Premium</SelectItem>
-                    <SelectItem value="plus">Plus</SelectItem>
+                    <SelectItem value="Single Room">Single Room</SelectItem>
+                    <SelectItem value="Double Room">Double Room</SelectItem>
+                    <SelectItem value="Suite">Suite</SelectItem>
+                    <SelectItem value="Family Room">Family Room</SelectItem>
+                    <SelectItem value="Deluxe Room">Deluxe Room</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -212,7 +214,11 @@ const RoomForm = ({
                   Bed Rooms Number <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="bed rooms number"/>
+                  <Input
+                    {...field}
+                    type="text"
+                    placeholder="bed rooms number"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -227,7 +233,11 @@ const RoomForm = ({
                   Rent Per Day <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="rent per day (1-2-3...)" />
+                  <Input
+                    {...field}
+                    type="text"
+                    placeholder="rent per day (1-2-3...)"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

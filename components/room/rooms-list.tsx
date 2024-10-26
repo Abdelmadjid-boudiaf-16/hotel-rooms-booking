@@ -1,13 +1,14 @@
 "use client";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell, TableHead,
-    TableHeader,
-    TableRow
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
-import { Room } from "@/types";
+import { Room, Hotel } from "@/types";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import dayjs from "dayjs";
@@ -15,7 +16,11 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
-export default function RoomsList({ rooms }: { rooms: Room[] }) {
+export default function RoomsList({
+  rooms,
+}: {
+  rooms: (Room & { hotel: Hotel })[];
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -58,7 +63,6 @@ export default function RoomsList({ rooms }: { rooms: Room[] }) {
         <Icons.spinner className="mr-2 h-10 w-10 animate-spin" />
       </div>
     );
-
   return (
     <Table>
       <TableCaption>
@@ -81,7 +85,7 @@ export default function RoomsList({ rooms }: { rooms: Room[] }) {
         {rooms.map((room) => (
           <TableRow key={room.id}>
             <TableCell>{room.name}</TableCell>
-            <TableCell>{room.name}</TableCell>
+            <TableCell>{room.hotel.name}</TableCell>
             <TableCell>{room.roomNumber}</TableCell>
             <TableCell>
               {dayjs(room.createdAt).format("MMM DD,YYYY hh:mm:ss")}

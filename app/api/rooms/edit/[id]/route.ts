@@ -19,6 +19,8 @@ export async function PUT(
       bedRooms,
       images,
     } = await request.json();
+    const hotel = await prisma.hotel.findFirst({ where: { name: hotelName } });
+    const hotelId = hotel?.id as string;
     const existingRoom = await prisma.room.findUnique({
       where: { id: roomId },
     });
@@ -29,7 +31,7 @@ export async function PUT(
     await prisma.room.update({
       where: { id: roomId },
       data: {
-        hotelName,
+        hotelId,
         name,
         rentPerDay,
         type,

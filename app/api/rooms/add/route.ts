@@ -16,7 +16,11 @@ export async function POST(req: Request) {
       images,
     } = await req.json();
 
-    const existingRoom = await prisma.hotel.findFirst({
+
+    const hotel = await prisma.hotel.findFirst({ where: { name: hotelName } })
+    const id = hotel?.id as string
+
+    const existingRoom = await prisma.room.findFirst({
       where: { name },
     });
 
@@ -29,7 +33,7 @@ export async function POST(req: Request) {
 
     await prisma.room.create({
       data: {
-        hotelName,
+        hotelId: id,
         name,
         rentPerDay,
         type,

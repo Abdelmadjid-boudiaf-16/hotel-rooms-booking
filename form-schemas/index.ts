@@ -57,3 +57,14 @@ export const roomSchema = z.object({
   amenities: z.string(),
   images: z.array(z.string()),
 });
+
+
+export const availablityCheckFormSchema = z
+  .object({
+    checkIn: z.date(),
+    checkOut: z.date(),
+  })
+  .refine((data) => data.checkIn < data.checkOut, {
+    message: "Check-in date must be before the check-out date",
+    path: ["checkOut"],
+  });

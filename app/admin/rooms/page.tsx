@@ -7,8 +7,11 @@ import Link from 'next/link'
 import React from 'react'
 
 const RoomsPage = async () => {
-  const response = await prisma.room.findMany()
-  const rooms: Room[] = JSON.parse(JSON.stringify(response))
+  const response = await prisma.room.findMany({
+    include: {hotel: true}
+  })
+
+  const rooms:(Room & { hotel: Hotel })[] = JSON.parse(JSON.stringify(response))
   return (
     <div className="flex flex-col gap-y-6">
       <div className="flex items-center justify-between">
