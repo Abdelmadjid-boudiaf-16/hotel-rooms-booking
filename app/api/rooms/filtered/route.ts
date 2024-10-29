@@ -14,7 +14,6 @@ export async function POST(req: Request) {
       );
     }
 
-    
     const availableRooms = await prisma.room.findMany({
       where: {
         bookings: {
@@ -23,15 +22,16 @@ export async function POST(req: Request) {
               {
                 checkIn: { lte: new Date(checkOut) },
                 checkOut: { gte: new Date(checkIn) },
+                bookingStatus: { not: "cancelled" },
               },
             ],
           },
         },
-        ...(type ? { type } : {}), 
+        ...(type ? { type } : {}),
       },
       include: {
-        hotel: true
-      }
+        hotel: true,
+      },
     });
 
     return NextResponse.json(

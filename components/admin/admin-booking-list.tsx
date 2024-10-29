@@ -22,7 +22,7 @@ export default function AdminBookingsList({
       <Table>
           <TableCaption>
             <div className="mt-10 flex flex-col items-center gap-y-3">
-              <span>A list of your hotels.</span>{" "}
+              <span>A list of your bookings.</span>{" "}
             </div>
           </TableCaption>
           <TableHeader>

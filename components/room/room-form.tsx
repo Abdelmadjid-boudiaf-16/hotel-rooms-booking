@@ -309,7 +309,7 @@ const RoomForm = ({
                               newImages.splice(index, 1);
                               field.onChange(newImages);
                             }}
-                            className="absolute -right-2 -top-2 h-5 w-5 rounded-full bg-red-500 p-1 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            className="absolute -right-2 -top-2 h-5 w-5 rounded-full bg-red-500 p-1 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-0"
                           >
                             <Icons.close className="h-4 w-4" />
                           </Button>

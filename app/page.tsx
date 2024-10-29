@@ -1,7 +1,7 @@
 import RoomsData from "@/components/room/rooms-data";
 import { Suspense } from "react";
 import Loading from "./admin/hotels/loading";
-import AvailableRooms from "@/components/available-rooms";
+import AvailableRooms from "@/components/room/available-rooms";
 import { Separator } from "@/components/ui/separator";
 
 export default async function Home() {

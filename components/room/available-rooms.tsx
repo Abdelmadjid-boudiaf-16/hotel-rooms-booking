@@ -6,15 +6,15 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "./ui/form";
+} from "../ui/form";
 
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { filterFormSchema } from "@/form-schemas";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Button } from "./ui/button";
-import { Calendar } from "./ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/button";
+import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
 import { CalendarIcon, CalendarSearchIcon, CalendarX2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -24,14 +24,14 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 import { Hotel, Room } from "@/types";
 import { useState } from "react";
-import { Card } from "./ui/card";
-import { CarouselDemo } from "./image-carousel";
-import { Separator } from "./ui/separator";
+import { Card } from "../ui/card";
+import { CarouselDemo } from "../image-carousel";
+import { Separator } from "../ui/separator";
 import Link from "next/link";
-import { formatAsDollar } from "./format-to-usd";
+import { formatAsDollar } from "../format-to-usd";
 import { useToast } from "@/hooks/use-toast";
 const AvailableRooms = () => {
   const [rooms, setRooms] = useState<(Room & { hotel: Hotel })[]>([]);

@@ -58,7 +58,6 @@ export const roomSchema = z.object({
   images: z.array(z.string()),
 });
 
-
 export const availablityCheckFormSchema = z
   .object({
     checkIn: z.date(),
@@ -69,15 +68,31 @@ export const availablityCheckFormSchema = z
     path: ["checkOut"],
   });
 
-  
 export const filterFormSchema = z
   .object({
     checkIn: z.date(),
     checkOut: z.date(),
-    type: z.string().optional()
+    type: z.string().optional(),
   })
   .refine((data) => data.checkIn < data.checkOut, {
     message: "Start date must be before the end date",
     path: ["checkOut"],
   });
 
+export const roportsFormSchema = z
+  .object({
+    checkIn: z.date(),
+    checkOut: z.date().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.checkOut) {
+        return data.checkIn < data.checkOut;
+      }
+      return true;
+    },
+    {
+      message: "Start date must be before the end date",
+      path: ["checkOut"],
+    },
+  );
