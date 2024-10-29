@@ -68,3 +68,16 @@ export const availablityCheckFormSchema = z
     message: "Check-in date must be before the check-out date",
     path: ["checkOut"],
   });
+
+  
+export const filterFormSchema = z
+  .object({
+    checkIn: z.date(),
+    checkOut: z.date(),
+    type: z.string().optional()
+  })
+  .refine((data) => data.checkIn < data.checkOut, {
+    message: "Start date must be before the end date",
+    path: ["checkOut"],
+  });
+

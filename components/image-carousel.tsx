@@ -1,17 +1,23 @@
-
 import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-export function CarouselDemo({imagesUrl}: {imagesUrl: string[]}) {
+export function CarouselDemo({
+  imagesUrl,
+  className,
+}: {
+  imagesUrl: string[];
+  className: string;
+}) {
   return (
     <Carousel
-      className="flex h-[340px] w-full overflow-hidden"
+      className={cn("flex overflow-hidden", className)}
       opts={{
         align: "start",
         loop: true,
