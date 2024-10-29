@@ -48,6 +48,7 @@ model User {
   active        Boolean   @default(true)
   accounts      Account[]
   sessions      Session[]
+  bookings      Booking[]
 }
 
 model Hotel {
@@ -59,6 +60,7 @@ model Hotel {
   location      String
   images        String[]
   rooms         Room[]   
+   bookings  Booking[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -74,8 +76,27 @@ model Room {
   amenities     String
   bedRooms      String
   images        String[]
+   bookings  Booking[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  user     User    @relation(fields: [userId], references: [id])
+  userId     String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  hotelId   String
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    String
+  checkIn   DateTime
+  checkOut  DateTime
+  totaldays Int
+  bookingStatus   String   @default("booked")
+  paymentId       String
+  amount          Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {

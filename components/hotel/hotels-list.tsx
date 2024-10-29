@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -64,7 +63,7 @@ export default function HotelsList({ hotels }: { hotels: Hotel[] }) {
   return (
     <Table>
       <TableCaption>
-        <div className="flex flex-col items-center gap-y-3 mt-10">
+        <div className="mt-10 flex flex-col items-center gap-y-3">
           <span>A list of your hotels.</span>{" "}
           <Button onClick={() => router.refresh()}>Refresh</Button>
         </div>

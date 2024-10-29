@@ -22,9 +22,7 @@ export default auth((req) => {
   if (pathname === "/login" || pathname === "/register") {
     return redirectTo("/");
   }
-  if (req.auth.user.admin && pathname.startsWith("/user")) {
-    return redirectTo("/");
-  }
+
 
   if (!req.auth.user.admin && pathname.startsWith("/admin")) {
     return redirectTo("/");
