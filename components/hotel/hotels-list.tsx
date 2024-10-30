@@ -99,14 +99,6 @@ export default function HotelsList({ hotels }: { hotels: Hotel[] }) {
                 <Button
                   variant={"outline"}
                   onClick={() => {
-                    console.log(hotel.name);
-                  }}
-                >
-                  <Icons.add size={20} className="text-green-500" />
-                </Button>
-                <Button
-                  variant={"outline"}
-                  onClick={() => {
                     router.push(`/admin/hotels/edit/${hotel.id}`);
                   }}
                 >

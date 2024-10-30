@@ -14,10 +14,10 @@ const LayoutProvider = ({ children }: { children: ReactNode }) => {
   const { data: session } = useSession();
   useEffect(() => {
     const fetchUser = async (id: string) => {
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const response = await fetch(`/api/users/${id}`);
-        const fetchedUser = await response.json();
+        const fetchedUser = JSON.parse(JSON.stringify(response));
         setUser(fetchedUser);
       } catch (error) {
         console.error("Failed to fetch user:", error);
@@ -25,19 +25,22 @@ const LayoutProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
       }
     };
-
     if (session?.user?.id) {
       fetchUser(session.user.id);
+    } else {
+      setUser(null);
+      setIsLoading(false);
     }
   }, [session?.user?.id]);
 
   if (!user && (pathname === "/login" || pathname === "/register")) {
     return <div>{children}</div>;
   }
-  if(isLoading) return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Icons.spinner className="mr-2 h-10 w-10 animate-spin" />
-    </div>
+  if (isLoading)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Icons.spinner className="mr-2 h-10 w-10 animate-spin" />
+      </div>
     );
   return (
     <div className="container mx-auto xl:max-w-7xl">

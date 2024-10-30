@@ -1,5 +1,4 @@
-import { MyUser } from '@/types'
-import React from 'react'
+import { MyUser } from '@/types';
 import { SheetDemo } from './sidebar';
 
 const UserInfo = ({userInfo}:{userInfo: MyUser}) => {

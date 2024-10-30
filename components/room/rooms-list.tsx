@@ -98,14 +98,6 @@ export default function RoomsList({
                 <Button
                   variant={"outline"}
                   onClick={() => {
-                    console.log(room.name);
-                  }}
-                >
-                  <Icons.add size={20} className="text-green-500" />
-                </Button>
-                <Button
-                  variant={"outline"}
-                  onClick={() => {
                     router.push(`/admin/rooms/edit/${room.id}`);
                   }}
                 >

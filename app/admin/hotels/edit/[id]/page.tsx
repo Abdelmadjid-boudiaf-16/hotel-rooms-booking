@@ -6,7 +6,6 @@ const EditHotleInfo = async ({ params }: { params: { id: string } }) => {
   const hotelId = params.id;
   const response = await prisma.hotel.findUnique({ where: { id: hotelId } });
   const hotel = JSON.parse(JSON.stringify(response))
-  console.log(hotel)
 
   return (
     <div className="flex justify-center">

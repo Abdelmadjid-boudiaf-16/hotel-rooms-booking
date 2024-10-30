@@ -23,8 +23,10 @@ import { Input } from "../ui/input";
 import { Check, CheckIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const UsersList = ({ users }: { users: MyUser[] }) => {
+  const { data: session } = useSession();
   const { toast } = useToast();
   const router = useRouter();
   const handleSubmit = async (
@@ -83,31 +85,33 @@ const UsersList = ({ users }: { users: MyUser[] }) => {
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.id}</TableCell>
             <TableCell>{user.admin ? "admin" : "user"}</TableCell>
-            <TableCell>
-              <form
-                onSubmit={(event) => handleSubmit(event, user.id)}
-                className="flex items-center gap-2"
-              >
-                <Select
-                  name="role"
-                  defaultValue={user.admin ? "admin" : "user"}
+            {user.id !== session?.user.id && (
+              <TableCell>
+                <form
+                  onSubmit={(event) => handleSubmit(event, user.id)}
+                  className="flex items-center gap-2"
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="user">User</SelectItem>
-                      <Input type="hidden" value={user.id} name="id" />
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <Button variant={"outline"}>
-                  <CheckIcon />
-                </Button>
-              </form>
-            </TableCell>
+                  <Select
+                    name="role"
+                    defaultValue={user.admin ? "admin" : "user"}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="user">User</SelectItem>
+                        <Input type="hidden" value={user.id} name="id" />
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <Button variant={"outline"}>
+                    <CheckIcon />
+                  </Button>
+                </form>
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

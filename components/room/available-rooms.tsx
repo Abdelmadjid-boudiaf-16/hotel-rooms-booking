@@ -1,11 +1,11 @@
 "use client";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "../ui/form";
 
 import * as z from "zod";
@@ -19,11 +19,11 @@ import { format } from "date-fns";
 import { CalendarIcon, CalendarSearchIcon, CalendarX2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "../ui/select";
 import { Hotel, Room } from "@/types";
 import { useState } from "react";
@@ -35,6 +35,7 @@ import { formatAsDollar } from "../format-to-usd";
 import { useToast } from "@/hooks/use-toast";
 const AvailableRooms = () => {
   const [rooms, setRooms] = useState<(Room & { hotel: Hotel })[]>([]);
+  const [onSearch, setOnSearch] = useState(false);
   const form = useForm<z.infer<typeof filterFormSchema>>({
     resolver: zodResolver(filterFormSchema),
   });
@@ -50,7 +51,7 @@ const AvailableRooms = () => {
           type: values.type || null,
         }),
       });
-
+      setOnSearch(true);
       if (response.ok) {
         const data = await response.json();
         setRooms(data.availableRooms);
@@ -181,9 +182,15 @@ const AvailableRooms = () => {
               </FormItem>
             )}
           />
-
           <div className="flex h-full items-center justify-between gap-8 lg:justify-normal">
-            <Button type="button">
+            <Button
+              type="button"
+              onClick={() => {
+                form.reset();
+                setRooms([]);
+                setOnSearch(false);
+              }}
+            >
               <CalendarX2Icon />
               Clear
             </Button>
@@ -198,9 +205,12 @@ const AvailableRooms = () => {
           <Separator />
           <h1 className="text-lg font-bold">Available Rooms</h1>
           {rooms.map((room: Room & { hotel: Hotel }) => (
-            <Card key={room.id} className="flex h-44 w-full gap-3">
+            <Card
+              key={room.id}
+              className="flex h-auto w-full flex-col gap-3 overflow-hidden rounded-lg sm:h-44 sm:flex-row"
+            >
               <CarouselDemo
-                className="h-full w-[250px]"
+                className="h-80 w-full sm:h-full sm:w-[250px]"
                 imagesUrl={room.images}
               />
               <div className="flex flex-1 flex-col gap-2 p-2">
@@ -225,6 +235,11 @@ const AvailableRooms = () => {
               </div>
             </Card>
           ))}
+        </div>
+      ) : onSearch ? (
+        <div className="my-4 flex flex-col gap-4">
+          <Separator />
+          <span>No rooms available!</span>
         </div>
       ) : null}
     </div>

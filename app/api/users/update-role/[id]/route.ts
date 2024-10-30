@@ -19,6 +19,7 @@ export async function PUT(
         admin: role === "admin" ? true : false,
       },
     });
+
     return NextResponse.json(
       { message: "User role updated successfully" },
       { status: 200 },

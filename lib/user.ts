@@ -6,7 +6,7 @@ export const getUserByEmail = async (email: string) => {
     if (!user) return null;
     return user;
   } catch (error) {
-    console.log("Get user by email error: ===", error);
+    console.log(error);
   }
 };
 export const getUserById = async (id: string) => {
@@ -15,6 +15,6 @@ export const getUserById = async (id: string) => {
     if (!user) return null;
     return user;
   } catch (error) {
-    console.log("Get user by Id error: ===", error);
+    console.log(error);
   }
 };

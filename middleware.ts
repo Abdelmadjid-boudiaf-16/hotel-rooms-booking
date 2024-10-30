@@ -7,9 +7,8 @@ export default auth((req) => {
 
   const redirectTo = (path: string) =>
     NextResponse.redirect(new URL(path, origin));
-
   if (pathname === "/") {
-    return;
+    return ;
   }
 
   if (!req.auth) {
@@ -23,7 +22,6 @@ export default auth((req) => {
     return redirectTo("/");
   }
 
-
   if (!req.auth.user.admin && pathname.startsWith("/admin")) {
     return redirectTo("/");
   }
@@ -32,4 +30,3 @@ export default auth((req) => {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
-

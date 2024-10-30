@@ -108,9 +108,6 @@ const AdminReportsData = ({
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date < new Date(new Date().setHours(0, 0, 0, 0))
-                      }
                       initialFocus
                     />
                   </PopoverContent>
@@ -149,9 +146,6 @@ const AdminReportsData = ({
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date < new Date(new Date().setHours(0, 0, 0, 0))
-                      }
                       initialFocus
                     />
                   </PopoverContent>
@@ -161,7 +155,13 @@ const AdminReportsData = ({
             )}
           />
           <div className="flex h-full items-center justify-between gap-8 lg:justify-normal">
-            <Button type="button">
+            <Button
+              type="button"
+              onClick={() => {
+                form.reset();
+                setData([]);
+              }}
+            >
               <CalendarX2Icon />
               Clear
             </Button>

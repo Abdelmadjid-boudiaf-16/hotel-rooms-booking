@@ -16,7 +16,6 @@ import {
   User2,
   UsersIcon,
 } from "lucide-react";
-import { ModeToggle } from "../mode-toggle";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
@@ -87,8 +86,6 @@ export function SheetDemo({ isAdmin }: { isAdmin: boolean | null }) {
   const userItemsWithPaths = isAdmin
     ? modifyPaths(userItems, "/admin")
     : modifyPaths(userItems, "/user");
-
-  // Filter unique items for the final list
   const uniqueUserItems = userItemsWithPaths.filter(
     (userItem) =>
       !adminItemsWithPaths.some(
@@ -96,16 +93,11 @@ export function SheetDemo({ isAdmin }: { isAdmin: boolean | null }) {
       ),
   );
 
-  // Combine items conditionally
   const itemsToShow = isAdmin
     ? [...adminItemsWithPaths, ...uniqueUserItems]
     : userItemsWithPaths;
 
-  //  const uniqueUserItems = userItems.filter(
-  //    (userItem) =>
-  //      !adminItems.some((adminItem) => adminItem.name === userItem.name),
-  //  );
-  //  const itemsToShow = isAdmin ? [...adminItems, ...uniqueUserItems] : userItems;
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -117,7 +109,7 @@ export function SheetDemo({ isAdmin }: { isAdmin: boolean | null }) {
         <ScrollArea className="h-full">
           <div className="flex flex-col justify-between">
             {/* .... */}
-            <ul className="my-20 flex flex-1 flex-col gap-3">
+            <ul className="my-10 flex flex-1 flex-col gap-3">
               {itemsToShow.map((item, index) => (
                 <li
                   key={index}
@@ -136,10 +128,10 @@ export function SheetDemo({ isAdmin }: { isAdmin: boolean | null }) {
                 </li>
               ))}
             </ul>
-            <SheetFooter className="mt-10 flex items-center justify-between">
-              <ModeToggle />
+            <SheetFooter>
               <SheetClose asChild>
                 <Button
+                  className="w-full"
                   variant={"outline"}
                   onClick={() => signOut({ redirectTo: "/login" })}
                 >
