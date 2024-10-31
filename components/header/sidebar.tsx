@@ -22,7 +22,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { ScrollArea } from "../ui/scroll-area";
 
-export function SheetDemo({ isAdmin }: { isAdmin: boolean | null }) {
+export function SheetDemo({ isAdmin }: { isAdmin: boolean }) {
   const pathname = usePathname();
   const iconSize = 20;
   const adminItems = [
@@ -97,7 +97,6 @@ export function SheetDemo({ isAdmin }: { isAdmin: boolean | null }) {
     ? [...adminItemsWithPaths, ...uniqueUserItems]
     : userItemsWithPaths;
 
-  
   return (
     <Sheet>
       <SheetTrigger asChild>

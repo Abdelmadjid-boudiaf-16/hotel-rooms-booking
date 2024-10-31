@@ -7,10 +7,9 @@ import React from "react";
 const UserProfilePage = async () => {
   const session = await auth();
   const response = await prisma.user.findUnique({
-    where: { id: session?.user.id },
-    include: {bookings: true}
+    where: { id: session?.user.id }
   });
-  const user: MyUser & {bookings: Booking[]} = JSON.parse(JSON.stringify(response));
+  const user: MyUser = JSON.parse(JSON.stringify(response));
   return <UserProfile user={user} />;
 };
 

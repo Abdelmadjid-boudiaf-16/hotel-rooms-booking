@@ -31,6 +31,7 @@ const AdminReportsData = ({
     room: Room;
   })[];
 }) => {
+  const [getData, setGetData] = useState(false);
   const [data, setData] = useState<
     (Booking & { user: MyUser } & { hotel: Hotel } & { room: Room })[]
   >([]);
@@ -52,6 +53,7 @@ const AdminReportsData = ({
       if (response.ok) {
         const data = await response.json();
         setData(data.bookings);
+        setGetData(true);
       } else {
         toast({
           title: "Available Rooms",
@@ -66,7 +68,10 @@ const AdminReportsData = ({
       });
     }
   };
-  const bookingsData = data.length > 0 ? data : bookings;
+  const filteredBooking = bookings.filter(
+    (booking) => booking.bookingStatus !== "cancelled",
+  );
+  const bookingsData = getData ? data : filteredBooking;
 
   const totalRevenue = bookingsData.reduce((accumulator, bookingData) => {
     return accumulator + bookingData.amount;
@@ -159,7 +164,7 @@ const AdminReportsData = ({
               type="button"
               onClick={() => {
                 form.reset();
-                setData([]);
+                setGetData(false);
               }}
             >
               <CalendarX2Icon />

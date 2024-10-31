@@ -19,9 +19,21 @@ export async function POST(req: Request) {
 
     const bookings = await prisma.booking.findMany({
       where: {
-        checkIn: { lte: checkOutDate ? checkOutDate : checkInDate },
-        checkOut: { gte: checkInDate },
         bookingStatus: { not: "cancelled" },
+        OR: checkOutDate
+          ? [
+              {
+                checkIn: { lte: checkOutDate },
+                checkOut: { gte: checkInDate },
+              },
+              {
+                checkIn: { gte: checkInDate, lte: checkOutDate },
+                checkOut: { gte: checkInDate, lte: checkOutDate },
+              },
+            ]
+          : [
+              { checkIn: { gte: checkInDate } },
+            ],
       },
       include: {
         hotel: true,

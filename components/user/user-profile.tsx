@@ -3,7 +3,7 @@ import { Card } from "../ui/card";
 import { Label } from "../ui/label";
 import dayjs from "dayjs";
 
-const UserProfile = ({ user }: { user: MyUser & { bookings: Booking[] } }) => {
+const UserProfile = ({ user }: { user: MyUser}) => {
   return (
     <Card className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
       <Card className="flex flex-wrap items-center gap-3 p-2 sm:flex-col sm:items-start">
@@ -22,12 +22,6 @@ const UserProfile = ({ user }: { user: MyUser & { bookings: Booking[] } }) => {
         <Label>Active Status</Label>
         <span className="font-semibold">
           {user.active ? "Active" : "Not active"}
-        </span>
-      </Card>
-      <Card className="flex flex-wrap items-center gap-3 p-2 sm:flex-col sm:items-start">
-        <Label>Bookings</Label>
-        <span className="font-semibold">
-          {user.bookings.length}
         </span>
       </Card>
       <Card className="flex flex-wrap items-center gap-3 p-2 sm:flex-col sm:items-start">

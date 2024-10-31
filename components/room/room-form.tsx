@@ -325,7 +325,7 @@ const RoomForm = ({
 
           <div className="flex justify-end">
             <div className="flex items-center justify-end space-x-4">
-              <CancelConfirm />
+              <CancelConfirm path="/admin/rooms" />
               <Button disabled={isLoading}>
                 {isLoading && (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
