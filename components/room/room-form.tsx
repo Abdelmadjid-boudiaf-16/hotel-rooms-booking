@@ -29,6 +29,11 @@ import {
   SelectValue,
 } from "../ui/select";
 
+interface ApiResponse {
+  message: string;
+  status: number;
+}
+
 const RoomForm = ({
   title,
   type = "add",
@@ -43,76 +48,57 @@ const RoomForm = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  let form;
-  if (type === "add" || !room) {
-    form = useForm<z.infer<typeof roomSchema>>({
-      resolver: zodResolver(roomSchema),
-      defaultValues: {
-        name: "",
-        type: "",
-        roomNumber: "1",
-        rentPerDay: "1",
-        amenities: "",
-        bedRooms: "1",
-        hotelName: "",
-        images: [],
-      },
-    });
-  } else {
-    form = useForm<z.infer<typeof roomSchema>>({
-      resolver: zodResolver(roomSchema),
-      defaultValues: {
-        name: room.name,
-        type: room.type,
-        roomNumber: room.roomNumber,
-        rentPerDay: room.amenities,
-        amenities: room.amenities,
-        bedRooms: room.bedRooms,
-        hotelName: room.hotel.name,
-        images: room.images,
-      },
-    });
-  }
+
+  const form = useForm<z.infer<typeof roomSchema>>({
+    resolver: zodResolver(roomSchema),
+    defaultValues: {
+      name: room?.name ?? "",
+      type: room?.type ?? "",
+      roomNumber: room?.roomNumber ?? "1",
+      rentPerDay: room?.rentPerDay ?? "1",
+      amenities: room?.amenities ?? "",
+      bedRooms: room?.bedRooms ?? "1",
+      hotelName: room?.hotel?.name ?? "",
+      images: room?.images ?? [],
+    },
+  });
 
   const onSubmit = async (values: z.infer<typeof roomSchema>) => {
     setIsLoading(true);
-    let response: any = null;
-    if (type === "add" || !room) {
-      response = await fetch("/api/rooms/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-    } else {
-      response = await fetch(`/api/rooms/edit/${room.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-    }
+    try {
+      const response = await fetch(
+        type === "add" ? "/api/rooms/add" : `/api/rooms/edit/${room?.id}`,
+        {
+          method: type === "add" ? "POST" : "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        },
+      );
 
-    if (response.ok) {
-      if (type === "add") {
+      const data = (await response.json()) as ApiResponse;
+
+      if (response.ok) {
         toast({
-          title: "Add room",
-          description: "Add room successful",
+          title: type === "add" ? "Add room" : "Edit room",
+          description: `${type === "add" ? "Add" : "Edit"} room successful`,
         });
+        router.push("/admin/rooms");
       } else {
         toast({
-          title: "Edit room.",
-          description: "Edit room successful!",
+          variant: "destructive",
+          title: `${type === "add" ? "Add" : "Edit"} room failed`,
+          description: data.message,
         });
       }
-    } else {
-      const errorData = await response.json();
+    } catch (error) {
       toast({
         variant: "destructive",
-        title: type === "add" ? "add room failed" : "Edit room failed",
-        description: errorData.message,
+        title: "Error",
+        description: `An unexpected error occurred: ${error}`,
       });
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    router.push("/admin/rooms");
   };
 
   return (
@@ -186,7 +172,10 @@ const RoomForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Type</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={"clasic"}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a type" />
@@ -210,7 +199,6 @@ const RoomForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {" "}
                   Bed Rooms Number <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
@@ -268,28 +256,25 @@ const RoomForm = ({
                   <div>
                     <CldUploadWidget
                       uploadPreset={`${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`}
-                      onSuccess={(result, { widget }) => {
+                      onSuccess={(result) => {
                         const info = result.info as {
                           secure_url: string;
                         };
-                        field.value = [...field.value, info.secure_url];
-                        field.onChange(field.value);
+                        field.onChange([...field.value, info.secure_url]);
                       }}
                       options={{
                         multiple: true,
                       }}
                     >
-                      {({ open }) => {
-                        return (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => open()}
-                          >
-                            Upload Images
-                          </Button>
-                        );
-                      }}
+                      {({ open }) => (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => open()}
+                        >
+                          Upload Images
+                        </Button>
+                      )}
                     </CldUploadWidget>
 
                     <div className="mt-3 flex flex-wrap gap-2">

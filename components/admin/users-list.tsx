@@ -20,7 +20,7 @@ import {
 import { FormEvent } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "../ui/input";
-import { Check, CheckIcon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";

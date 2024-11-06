@@ -1,14 +1,12 @@
-'use client'
-import { handleSignOut } from '@/actions'
-import { Button } from '@/components/ui/button'
-import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
-import React from 'react'
+"use client";
+import { handleSignOut } from "@/actions";
+import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
-const dashboard = () => {
-  const {data:session} = useSession()
+const Dashboard = () => {
+  const { data: session } = useSession();
   return (
-    <div className='flex items-center flex-col justify-center min-h-screen gap-4 '>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
       <h1> Welcom {session?.user?.name} </h1>
       <div>
         <form action={handleSignOut}>
@@ -16,7 +14,7 @@ const dashboard = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default dashboard
+export default Dashboard;

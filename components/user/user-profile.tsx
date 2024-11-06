@@ -1,4 +1,4 @@
-import { MyUser, Booking } from "@/types";
+import { MyUser } from "@/types";
 import { Card } from "../ui/card";
 import { Label } from "../ui/label";
 import dayjs from "dayjs";

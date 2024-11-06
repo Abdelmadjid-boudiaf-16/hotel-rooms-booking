@@ -1,11 +1,8 @@
-import { auth } from "@/auth";
 import AdminBookingsList from "@/components/admin/admin-booking-list";
 import { Button } from "@/components/ui/button";
-import UserBookingsList from "@/components/user/user-bookings-list";
 import { prisma } from "@/prisma";
 import { Booking, Hotel, MyUser, Room } from "@/types";
 import Link from "next/link";
-import React from "react";
 
 const BookingsPage = async () => {
   const response = await prisma.booking.findMany({

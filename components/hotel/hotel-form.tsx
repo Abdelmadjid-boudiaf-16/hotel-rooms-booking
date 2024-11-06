@@ -22,6 +22,11 @@ import { Icons } from "../icons";
 import Image from "next/image";
 import { Hotel } from "@/types";
 
+interface ApiResponse {
+  message: string;
+  status: number;
+}
+
 const HotelForm = ({
   title,
   type = "add",
@@ -34,72 +39,55 @@ const HotelForm = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  let form;
-  if (type === "add" || !hotel) {
-    form = useForm<z.infer<typeof hotelSchema>>({
-      resolver: zodResolver(hotelSchema),
-      defaultValues: {
-        name: "",
-        email: "",
-        phone: "",
-        images: [],
-        location: "",
-        owner: "",
-      },
-    });
-  } else {
-    form = useForm<z.infer<typeof hotelSchema>>({
-      resolver: zodResolver(hotelSchema),
-      defaultValues: {
-        name: hotel.name,
-        email: hotel.email,
-        phone: hotel.phone,
-        images: hotel.images,
-        location: hotel.location,
-        owner: hotel.owner,
-      },
-    });
-  }
+
+  const form = useForm<z.infer<typeof hotelSchema>>({
+    resolver: zodResolver(hotelSchema),
+    defaultValues: {
+      name: hotel?.name ?? "",
+      email: hotel?.email ?? "",
+      phone: hotel?.phone ?? "",
+      images: hotel?.images ?? [],
+      location: hotel?.location ?? "",
+      owner: hotel?.owner ?? "",
+    },
+  });
 
   const onSubmit = async (values: z.infer<typeof hotelSchema>) => {
     setIsLoading(true);
-    let response: any = null;
-    if (type === "add" || !hotel) {
-      response = await fetch("/api/hotels/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-    } else {
-      response = await fetch(`/api/hotels/edit/${hotel.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-    }
+    try {
+      const response = await fetch(
+        type === "add" ? "/api/hotels/add" : `/api/hotels/edit/${hotel?.id}`,
+        {
+          method: type === "add" ? "POST" : "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        },
+      );
 
-    if (response.ok) {
-      if (type === "add") {
+      const data = (await response.json()) as ApiResponse;
+
+      if (response.ok) {
         toast({
-          title: "Add hotel",
-          description: "Add hotel successful",
+          title: type === "add" ? "Add hotel" : "Edit hotel",
+          description: `${type === "add" ? "Add" : "Edit"} hotel successful`,
         });
+        router.push("/admin/hotels");
       } else {
         toast({
-          title: "Edit hotel.",
-          description: "Edit hotel successful!",
+          variant: "destructive",
+          title: `${type === "add" ? "Add" : "Edit"} hotel failed`,
+          description: data.message,
         });
       }
-    } else {
-      const errorData = await response.json();
+    } catch (error) {
       toast({
         variant: "destructive",
-        title: type === "add" ? "add hotel failed" : "Edit hotel failed",
-        description: errorData.message,
+        title: "Error",
+        description: `An unexpected error occurred: ${error}`,
       });
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    router.push("/admin/hotels");
   };
 
   return (
@@ -195,28 +183,25 @@ const HotelForm = ({
                   <div>
                     <CldUploadWidget
                       uploadPreset={`${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`}
-                      onSuccess={(result, { widget }) => {
+                      onSuccess={(result) => {
                         const info = result.info as {
                           secure_url: string;
                         };
-                        field.value = [...field.value, info.secure_url];
-                        field.onChange(field.value);
+                        field.onChange([...field.value, info.secure_url]);
                       }}
                       options={{
                         multiple: true,
                       }}
                     >
-                      {({ open }) => {
-                        return (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => open()}
-                          >
-                            Upload Images
-                          </Button>
-                        );
-                      }}
+                      {({ open }) => (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => open()}
+                        >
+                          Upload Images
+                        </Button>
+                      )}
                     </CldUploadWidget>
 
                     <div className="mt-3 flex flex-wrap gap-2">

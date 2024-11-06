@@ -1,8 +1,7 @@
 import { auth } from "@/auth";
 import UserProfile from "@/components/user/user-profile";
 import { prisma } from "@/prisma";
-import { Booking, MyUser } from "@/types";
-import React from "react";
+import { MyUser } from "@/types";
 
 const UserProfilePage = async () => {
   const session = await auth();

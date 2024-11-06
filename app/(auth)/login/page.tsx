@@ -63,7 +63,7 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: "Login failed",
-        description: "An unexpected error occurred",
+        description: `${error}`,
       });
       setIsLoading(false);
     }
@@ -137,7 +137,7 @@ export default function LoginPage() {
         </Button>
       </form>
       <div className="flex w-full items-center justify-between text-sm">
-        <span className="text-muted-foreground">Don't have an account?</span>
+        <span className="text-muted-foreground">Don&apos;t have an account?</span>
         <Button asChild variant="outline" size="sm">
           <Link href="/register">Sign Up</Link>
         </Button>
@@ -145,4 +145,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

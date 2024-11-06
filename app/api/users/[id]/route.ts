@@ -1,6 +1,5 @@
-
 import { NextResponse } from "next/server";
-import { getUserById } from "@/lib/user"; 
+import { getUserById } from "@/lib/user";
 export async function GET(
   request: Request,
   { params }: { params: { id: string } },
@@ -15,7 +14,7 @@ export async function GET(
     return NextResponse.json(user);
   } catch (error) {
     return NextResponse.json(
-      { message: "Error fetching user" },
+      { message: `Error fetching user: ${error}` },
       { status: 500 },
     );
   }

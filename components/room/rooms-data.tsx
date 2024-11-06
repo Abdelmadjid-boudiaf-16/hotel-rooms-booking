@@ -1,6 +1,5 @@
 import { Hotel, Room } from "@/types";
 import { Card } from "../ui/card";
-import { prisma } from "@/prisma";
 import { CarouselDemo } from "../image-carousel";
 import { formatAsDollar } from "../format-to-usd";
 import { Separator } from "../ui/separator";

@@ -11,7 +11,6 @@ import {
 import { Booking, Hotel, MyUser, Room } from "@/types";
 import dayjs from "dayjs";
 import { formatAsDollar } from "../format-to-usd";
-import { ScrollArea } from "../ui/scroll-area";
 
 export default function AdminBookingsList({
   bookings,

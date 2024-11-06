@@ -1,8 +1,6 @@
-import HotelForm from "@/components/hotel/hotel-form";
 import RoomForm from "@/components/room/room-form";
 import { prisma } from "@/prisma";
 import { Hotel, Room } from "@/types";
-import React from "react";
 
 const EditRoomInfo = async ({ params }: { params: { id: string } }) => {
   const roomId = params.id;
