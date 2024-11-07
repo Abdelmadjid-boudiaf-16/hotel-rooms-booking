@@ -27,6 +27,43 @@ export async function POST(req: Request) {
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
 
+    // Validate dates
+    if (isNaN(checkInDate.getTime()) || isNaN(checkOutDate.getTime())) {
+      return NextResponse.json(
+        { message: "Invalid date format" },
+        { status: 400 },
+      );
+    }
+
+    // Check if room is already booked for the given dates
+    const overlappingBooking = await prisma.booking.findFirst({
+      where: {
+        roomId,
+        OR: [
+          {
+            AND: [
+              { checkIn: { lte: checkInDate } },
+              { checkOut: { gte: checkInDate } },
+            ],
+          },
+          {
+            AND: [
+              { checkIn: { lte: checkOutDate } },
+              { checkOut: { gte: checkOutDate } },
+            ],
+          },
+        ],
+      },
+    });
+
+    if (overlappingBooking) {
+      return NextResponse.json(
+        { message: "Room is not available for the selected dates" },
+        { status: 400 },
+      );
+    }
+
+    // Check for existing payment
     const existingBooking = await prisma.booking.findUnique({
       where: { paymentId },
     });
@@ -49,6 +86,11 @@ export async function POST(req: Request) {
         userId,
         amount,
         bookingStatus,
+      },
+      include: {
+        room: true,
+        hotel: true,
+        user: true,
       },
     });
 

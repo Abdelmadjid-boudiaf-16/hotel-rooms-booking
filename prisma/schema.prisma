@@ -95,7 +95,7 @@ model Booking {
   checkOut  DateTime
   totaldays Int
   bookingStatus   String   @default("booked")
-  paymentId       String
+  paymentId       String   @unique
   amount          Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
