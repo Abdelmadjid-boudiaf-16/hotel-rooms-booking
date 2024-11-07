@@ -1,7 +1,6 @@
 import { prisma } from "@/prisma";
 import { NextResponse } from "next/server";
 
-
 export async function POST(req: Request) {
   try {
     const {
@@ -16,7 +15,19 @@ export async function POST(req: Request) {
       bookingStatus,
     } = await req.json();
 
-    const existingBooking = await prisma.booking.findFirst({
+    // Validate required fields
+    if (!roomId || !userId || !paymentId) {
+      return NextResponse.json(
+        { message: "Missing required fields" },
+        { status: 400 },
+      );
+    }
+
+    // Parse dates if they're strings
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+
+    const existingBooking = await prisma.booking.findUnique({
       where: { paymentId },
     });
 
@@ -27,10 +38,10 @@ export async function POST(req: Request) {
       );
     }
 
-    await prisma.booking.create({
+    const booking = await prisma.booking.create({
       data: {
-        checkIn,
-        checkOut,
+        checkIn: checkInDate,
+        checkOut: checkOutDate,
         totaldays,
         paymentId,
         hotelId,
@@ -42,7 +53,10 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { message: "Room booked successfully" },
+      {
+        message: "Room booked successfully",
+        booking,
+      },
       { status: 201 },
     );
   } catch (error) {
